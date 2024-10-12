@@ -1,0 +1,12 @@
+pages-needed.txt
+
+Login/Signup (not needed but appreciated)
+
+Home Page / Dashboard
+(includes place to report potholes quickly)
+
+Map Page
+
+Reporting Pothole page
+
+Generate transcript page (to send to city)
