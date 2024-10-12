@@ -3,7 +3,7 @@ Goals:
 Irwin - Create frontend, learn about React and style frontend with css; 
 
 Edmund
-templategit status
+Learn about React
 
 
 Rywin
