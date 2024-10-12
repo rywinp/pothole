@@ -7,3 +7,7 @@ Learn about React
 
 
 Rywin
+Integrate Google Maps
+Create a Database
+Make some APIs for Javascript
+Personal Accounts feature
