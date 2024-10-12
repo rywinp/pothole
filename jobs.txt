@@ -1,6 +1,6 @@
 Goals:
 
-Irwin - Create frontend, learn about React and style frontend with css; 
+Irwin - Create frontend, practice react
 
 Edmund
 Learn about React
