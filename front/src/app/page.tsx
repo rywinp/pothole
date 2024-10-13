@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import GoogleMapComponent from './Map.js';
 
 const MapPage = () => {
