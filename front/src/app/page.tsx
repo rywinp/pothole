@@ -1,13 +1,19 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
 import Map from './Map.js';
 
+interface Location {
+  latitude: number | null;
+  longitude: number | null;
+  error: string | null;
+}
+
 const MapPage = () => {
-  const [location, setLocation] = useState({
+  const [location, setLocation] = useState<Location>({
     latitude: null,
     longitude: null,
-    error: null
+    error: null,
   });
 
   useEffect(() => {
