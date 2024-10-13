@@ -40,6 +40,9 @@ const Map = ({ latitude, longitude }) => {
       fetchData(); // Fetch data every 5 seconds (5000 ms)
     }, 5000);
 
+    // Update Interval every 1 second
+    
+
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 

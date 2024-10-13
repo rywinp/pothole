@@ -1,7 +1,24 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///potholes.db'
+# Init database
+db = SQLAlchemy(app)
+
+# Create db model
+class Potholes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lat = db.Column(db.Integer)
+    lng = db.Column(db.Integer)
+    severity = db.Column(db.Integer)
+    date_created = db.Column(db.DateTime, default=datetime.now)
+
+    def __repr__(self):
+        return f"<Pothole {self.id} at {self.location}>"
+
 CORS(app)
 
 @app.route('/api/get-data', methods=['GET'])
