@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <h1 className='text-4xl'> I am rendered on layout </h1>
+        <h1 className='text-9xl'> Road Report </h1>
         {children}
       </body>
     </html>
