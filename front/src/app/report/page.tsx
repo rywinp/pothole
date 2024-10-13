@@ -1,30 +1,32 @@
 'use client'
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import './styles.css'; // Adjust the path as necessary
 
 function Report() {
     const [isGenerating, setIsGenerating] = useState(false);
+    const router = useRouter();
 
     const handleGenerateReport = () => {
         setIsGenerating(true);
-        //Here you would add the logic to generate the report
-        //Right now its only simulating a delay
         setTimeout(() => {
             setIsGenerating(false);
-            alert('Report generated!'); //popup when delay is done
+            alert('Report generated!');
+        }, 2000);
+    };
 
-        }, 2000);// delay of 2000 milliseconds/2 Seconds
+    const handleBackClick = () => {
+        router.push('/');
     };
 
     return (
-        <div>  {/* Added this wrapper div */}
+        <div>
             <h1 className="title">City Report</h1>
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                 <button 
                     onClick={handleGenerateReport}
                     disabled={isGenerating}
-                    //Design of the button
                     style={{
                         padding: '10px 20px',
                         fontSize: '1rem',
@@ -32,10 +34,25 @@ function Report() {
                         color: 'white',
                         border: 'none',
                         borderRadius: '5px',
-                        cursor: isGenerating ? 'not-allowed' : 'pointer'
+                        cursor: isGenerating ? 'not-allowed' : 'pointer',
+                        marginRight: '10px'
                     }}
                 >
                     {isGenerating ? 'Generating...' : 'Generate Report'}
+                </button>
+                <button 
+                    onClick={handleBackClick}
+                    style={{
+                        padding: '10px 20px',
+                        fontSize: '1rem',
+                        backgroundColor: '#6c757d',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    Back to Map
                 </button>
             </div>
         </div>
