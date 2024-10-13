@@ -15,7 +15,7 @@ const Map = ({ latitude, longitude }) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="border-8 rounded-lg -translate-y-7" style={{ borderColor: '#FDFD96' }}>
+      <div className="border-8 rounded-lg -translate-y-7">
         <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
           <GoogleMap
             mapContainerStyle={{ width: '1000px', height: '700px' }}

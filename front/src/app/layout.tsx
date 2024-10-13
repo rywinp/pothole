@@ -26,9 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className='bg-gradient-to-r from-blue-500 to-blue-700 p-4 rounded-lg shadow-lg'
       >
-        <h1 className='text-7xl text-center'> Road Report </h1>
+        <h1 className="text-6xl text-center font-bold text-white ">
+          Road Report
+        </h1>
         {children}
       </body>
     </html>
