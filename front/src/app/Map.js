@@ -45,25 +45,27 @@ const Map = ({ latitude, longitude }) => {
 
   return (
     <div className="flex justify-center items-center h-screen -m-4">
-      <div className="border-8 rounded-lg">
+      <div className="border-8 rounded-lg w-full h-full md:w-4/5 md:h-4/5 lg:w-3/4 lg:h-3/4">
         <LoadScript googleMapsApiKey={process.env.AIzaSyA1cIr2IVeA2nbhvWYG}>
+          
           <GoogleMap
-            mapContainerStyle={{ width: '900px', height: '650px' }}
+            mapContainerStyle={{ width: '100%', height: '100%' }} // Responsive width and height
             center={center}
             zoom={10}
             onLoad={onLoad}
           >
             <Marker position={center} />
     
-        {/* Render markers for each pothole */}
-        {potholes.map((pothole, index) => (
-          <Marker
-            key={index} // Use a unique key, ideally something from the data
-            position={{ lat: pothole.lat, lng: pothole.lng }} // Adjust according to your data structure
-            title={`Severity: ${pothole.severity}`} // Title displayed when hovering over the marker
-          />
-        ))}
-      </GoogleMap>
+            {/* Render markers for each pothole */}
+            {potholes.map((pothole, index) => (
+              <Marker
+                key={index} // Use a unique key, ideally something from the data
+                position={{ lat: pothole.lat, lng: pothole.lng }} // Adjust according to your data structure
+                title={`Severity: ${pothole.severity}`} // Title displayed when hovering over the marker
+              />
+            ))}
+          </GoogleMap>
+          
         </LoadScript>
       </div>
     </div>
