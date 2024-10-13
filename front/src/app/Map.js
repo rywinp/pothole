@@ -49,7 +49,7 @@ const GoogleMapComponent = () => {
   }
 
   return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+    <LoadScript googleMapsApiKey={'AIzaSyDgauAPxyDnkFRZlgOq-el4BSp_EFLSnbA'}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={location} // Use updated location
