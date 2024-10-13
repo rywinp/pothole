@@ -16,36 +16,33 @@ const GoogleMapComponent = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
-      return;
-    }
-
-    // Watch the user's position
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
-        setLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
+        const { latitude, longitude } = position.coords;
+        const newLocation = { lat: latitude, lng: longitude };
+        setLocation(newLocation);
+        console.log('Updated location:', newLocation); // Log the updated location
       },
       (err) => {
         setError(err.message);
+        console.error('Geolocation error:', err); // Log any geolocation errors
       },
       {
-        enableHighAccuracy: true, // Use high accuracy for GPS
-        timeout: 5000, // Timeout before throwing an error
-        maximumAge: 0, // Don't use a cached position
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
       }
     );
 
-    // Clean up the watcher when the component unmounts
+    // Clean up the watch on component unmount
     return () => {
-      if (watchId) {
-        navigator.geolocation.clearWatch(watchId);
-      }
+      navigator.geolocation.clearWatch(watchId);
     };
   }, []);
+
+  useEffect(() => {
+    console.log('Current location state:', location);
+  }, [location]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -55,10 +52,12 @@ const GoogleMapComponent = () => {
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={location.lat && location.lng ? location : defaultCenter} // Use location if available, else default
+        center={location} // Use updated location
         zoom={10}
       >
-        <Marker position={location.lat && location.lng ? location : defaultCenter} />
+        {location.lat && location.lng && (
+          <Marker position={location} />
+        )}
       </GoogleMap>
     </LoadScript>
   );
