@@ -13,6 +13,8 @@ const Map = ({ latitude, longitude }) => {
     lng: longitude,
   };
 
+  let [currLocation, setCurrLocation] = useState(center);
+
   const onLoad = (map) => {
     setMap(map);
   };
@@ -33,9 +35,30 @@ const Map = ({ latitude, longitude }) => {
     });
   }
 
+  function updateLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrLocation({ lat: latitude, lng: longitude });
+        },
+        () => {
+          console.error("Unable to retrieve your location");
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by your browser");
+    }
+
+  }
+
   useEffect(() => {
     fetchData(); // Fetch data when component mounts
+    updateLocation();
 
+    const currentId = setInterval(() => {
+      updateLocation();
+    }, 1000);
     const intervalId = setInterval(() => {
       fetchData(); // Fetch data every 5 seconds (5000 ms)
     }, 5000);
@@ -53,12 +76,12 @@ const Map = ({ latitude, longitude }) => {
           
           <GoogleMap
             mapContainerStyle={{ width: '100%', height: '100%' }} // Responsive width and height
-            center={center}
+            center={currLocation}
             zoom={10}
             onLoad={onLoad}
           >
-            <Marker position={center} />
-    
+            <Marker position={currLocation} />
+
             {/* Render markers for each pothole */}
             {potholes.map((pothole, index) => (
               <Marker
