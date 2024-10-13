@@ -16,6 +16,27 @@ const GoogleMapComponent = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    fetch("/api/get-data").then(response => {
+      // Check if the response is ok (status code in the range 200-299)
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); // Parse the JSON from the response
+    })
+    .then(data => {
+      // Handle the data from the response
+      console.log(data);
+    })
+    .catch(error => {
+      // Handle errors here
+      console.error('There was a problem with the fetch operation:', error);
+    });
+  }, [])
+
+  useEffect(() => {
+
+    
+
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
