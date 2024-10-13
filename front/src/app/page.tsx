@@ -3,22 +3,18 @@
 import { useState, useEffect } from 'react';
 import Map from './Map.js';
 
-interface Location {
-  latitude: number | null;
-  longitude: number | null;
-  error: string | null;
-}
-
 const MapPage = () => {
-  const [location, setLocation] = useState<Location>({
+  const [location, setLocation] = useState<{
+    latitude: number | null;
+    longitude: number | null;
+    error: string | null;
+  }>({
     latitude: null,
     longitude: null,
     error: null,
   });
-
   useEffect(() => {
     if ('geolocation' in navigator) {
-      // Request the user's location when the component mounts
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLocation({
@@ -40,21 +36,28 @@ const MapPage = () => {
         error: 'Geolocation is not supported by this browser.',
       }));
     }
-  }, []); // Empty dependency array means this effect runs once when the component mounts
+  }, []);
 
   if (location.error) {
     return <div>Error: {location.error}</div>;
   }
 
   if (location.latitude === null || location.longitude === null) {
-    return <div>Loading location...</div>; // Show loading until location is retrieved
+    return <div>Loading location...</div>;
   }
 
   return (
     <div>
-      <h1 className='text-center mt-4 text-xl'> For a safer trip, together. </h1>
+      <h1 className='text-center mt-4 text-xl'>For a safer trip, together.</h1>
       {/* Pass the fetched coordinates to the Map component */}
       <Map latitude={location.latitude} longitude={location.longitude} />
+      
+      {/* Center the button horizontally */}
+      <div className="flex justify-center mt-4">
+        <button className="bg-white text-black font-bold py-2 px-6 rounded-full shadow-lg">
+          Submit Pothole
+        </button>
+      </div>
     </div>
   );
 };
