@@ -52,7 +52,7 @@ const MapPage = () => {
 
   return (
     <div>
-      <h1>My Map</h1>
+      <h1 className='text-center mt-4 text-xl'> For a safer trip, together. </h1>
       {/* Pass the fetched coordinates to the Map component */}
       <Map latitude={location.latitude} longitude={location.longitude} />
     </div>

@@ -14,16 +14,20 @@ const Map = ({ latitude, longitude }) => {
   };
 
   return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        mapContainerStyle={{ width: '100%', height: '400px' }}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-      >
-        <Marker position={center} />
-      </GoogleMap>
-    </LoadScript>
+    <div className="flex justify-center items-center h-screen">
+      <div className="border-8 rounded-lg -translate-y-7" style={{ borderColor: '#FDFD96' }}>
+        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+          <GoogleMap
+            mapContainerStyle={{ width: '1000px', height: '700px' }}
+            center={center}
+            zoom={10}
+            onLoad={onLoad}
+          >
+            <Marker position={center} />
+          </GoogleMap>
+        </LoadScript>
+      </div>
+    </div>
   );
 };
 
