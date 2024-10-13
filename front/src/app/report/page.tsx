@@ -7,15 +7,15 @@ import './styles.css'; // Adjust the path as necessary
 function Report() {
     const [isGenerating, setIsGenerating] = useState(false);
     const router = useRouter();
-
+//Manages the generate report button
     const handleGenerateReport = () => {
         setIsGenerating(true);
         setTimeout(() => {
             setIsGenerating(false);
             alert('Report generated!');
-        }, 2000);
+        }, 1000);
     };
-
+//manages the back arrow that goes back to 
     const handleBackClick = () => {
         router.push('/');
     };
@@ -30,8 +30,8 @@ function Report() {
                     style={{
                         padding: '10px 20px',
                         fontSize: '1rem',
-                        backgroundColor: isGenerating ? '#cccccc' : '#007bff',
-                        color: 'white',
+                        backgroundColor: isGenerating ? '#cccccc' : 'red',
+                        color: 'black',
                         border: 'none',
                         borderRadius: '5px',
                         cursor: isGenerating ? 'not-allowed' : 'pointer',
