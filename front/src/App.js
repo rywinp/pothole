@@ -1,8 +1,10 @@
+import './App.css';
+
+
 function App(){
   return(
-    <div className="home">
-
-    <h1>Hello</h1>
+    <div className="app-background">
+      <h1>Road Report</h1>
 
 
     </div>
