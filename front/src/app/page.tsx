@@ -1,17 +1,19 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import Map from './Map.js';
 
-const Home = () => {
+const MapPage = () => {
   const [location, setLocation] = useState({
     latitude: null,
     longitude: null,
-    error: null,
+    error: null
   });
 
   useEffect(() => {
     if ('geolocation' in navigator) {
-      navigator.geolocation.watchPosition(
+      // Request the user's location when the component mounts
+      navigator.geolocation.getCurrentPosition(
         (position) => {
           setLocation({
             latitude: position.coords.latitude,
@@ -22,13 +24,8 @@ const Home = () => {
         (error) => {
           setLocation((prevState) => ({
             ...prevState,
-            error: error.message,
+            error: 'Unable to retrieve your location. Please check your permissions.',
           }));
-        },
-        {
-          enableHighAccuracy: true, // Use high accuracy for better results
-          timeout: 20000, // Increase the timeout to 20 seconds
-          maximumAge: 10000, // Allow a cached position up to 10 seconds old
         }
       );
     } else {
@@ -37,21 +34,23 @@ const Home = () => {
         error: 'Geolocation is not supported by this browser.',
       }));
     }
-  }, []);
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
+  if (location.error) {
+    return <div>Error: {location.error}</div>;
+  }
+
+  if (location.latitude === null || location.longitude === null) {
+    return <div>Loading location...</div>; // Show loading until location is retrieved
+  }
 
   return (
     <div>
-      {location.error ? (
-        <p>Error: {location.error}</p>
-      ) : (
-        <div>
-          <h2>Your Live Location</h2>
-          <p>Latitude: {location.latitude}</p>
-          <p>Longitude: {location.longitude}</p>
-        </div>
-      )}
+      <h1>My Map</h1>
+      {/* Pass the fetched coordinates to the Map component */}
+      <Map latitude={location.latitude} longitude={location.longitude} />
     </div>
   );
 };
 
-export default Home;
+export default MapPage;
