@@ -1,101 +1,67 @@
-'use client';
-
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useState, useEffect } from 'react';
-const API_URL = "http://127.0.0.1:8000/api/get-data";
 
-const Map = ({ latitude, longitude }) => {
-  const [map, setMap] = useState(null);
-  const [potholes, setPotholes] = useState([]);
-
-  const center = {
-    lat: latitude,
-    lng: longitude,
+const GoogleMapComponent = () => {
+  const containerStyle = {
+    width: '100%',
+    height: '400px',
   };
 
-  let [currLocation, setCurrLocation] = useState(center);
-
-  const onLoad = (map) => {
-    setMap(map);
+  const defaultCenter = {
+    lat: 40.73061, // Example default latitude
+    lng: -73.935242, // Example default longitude
   };
 
-  function fetchData() {
-    fetch(API_URL)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.json();
-    })
-    .then(data => {
-        setPotholes(data);
-    })
-    .catch(error => {
-        console.error("Error fetching data:", error);
-    });
-  }
-
-  function updateLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrLocation({ lat: latitude, lng: longitude });
-        },
-        () => {
-          console.error("Unable to retrieve your location");
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by your browser");
-    }
-
-  }
+  const [location, setLocation] = useState(defaultCenter);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchData(); // Fetch data when component mounts
-    updateLocation();
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser.");
+      return;
+    }
 
-    const currentId = setInterval(() => {
-      updateLocation();
-    }, 1000);
-    const intervalId = setInterval(() => {
-      fetchData(); // Fetch data every 5 seconds (5000 ms)
-    }, 5000);
+    // Watch the user's position
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (err) => {
+        setError(err.message);
+      },
+      {
+        enableHighAccuracy: true, // Use high accuracy for GPS
+        timeout: 5000, // Timeout before throwing an error
+        maximumAge: 0, // Don't use a cached position
+      }
+    );
 
-    // Update Interval every 1 second
-    
-
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    // Clean up the watcher when the component unmounts
+    return () => {
+      if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
   }, []);
 
-  return (
-    <div className="flex justify-center items-center h-screen -m-4">
-      <div className="border-8 rounded-lg w-full h-full md:w-4/5 md:h-4/5 lg:w-3/4 lg:h-3/4">
-        <LoadScript googleMapsApiKey={process.env.AIzaSyA1cIr2IVeA2nbhvWYG}>
-          
-          <GoogleMap
-            mapContainerStyle={{ width: '100%', height: '100%' }} // Responsive width and height
-            center={currLocation}
-            zoom={10}
-            onLoad={onLoad}
-          >
-            <Marker position={currLocation} />
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-            {/* Render markers for each pothole */}
-            {potholes.map((pothole, index) => (
-              <Marker
-                key={index} // Use a unique key, ideally something from the data
-                position={{ lat: pothole.lat, lng: pothole.lng }} // Adjust according to your data structure
-                title={`Severity: ${pothole.severity}`} // Title displayed when hovering over the marker
-              />
-            ))}
-          </GoogleMap>
-          
-        </LoadScript>
-      </div>
-    </div>
+  return (
+    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={location.lat && location.lng ? location : defaultCenter} // Use location if available, else default
+        zoom={10}
+      >
+        <Marker position={location.lat && location.lng ? location : defaultCenter} />
+      </GoogleMap>
+    </LoadScript>
   );
 };
 
-export default Map;
+export default GoogleMapComponent;
